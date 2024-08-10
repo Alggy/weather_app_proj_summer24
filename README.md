@@ -30,7 +30,7 @@ Run the script:
 
 ```sh
 
-python -m app.unemployment
+python -m app.weather
 ```
 
 ## Testing

@@ -13,7 +13,7 @@ latitude = geo["latitude"]
 longitude = geo["longitude"]
 
 request_url = f"https://api.weather.gov/points/{latitude},{longitude}"
-print(request_url)
+# print(request_url)
 response = requests.get(request_url)
 parsed_response = json.loads(response.text)
 
