@@ -9,4 +9,8 @@ python-dotenv
 pandas
 pytest
 flask
-gnuicorn
+
+pgeocode
+json
+
+#gnuicorn

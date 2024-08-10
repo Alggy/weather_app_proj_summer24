@@ -1,7 +1,6 @@
 # weather_app_proj_summer24
 group project - NYU Stern Summer24 project
 
-# my-first-app-inclass-summer-2024
 
 ## Setup
 
