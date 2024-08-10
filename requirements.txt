@@ -1,0 +1,12 @@
+
+# this is the "requirements.txt" file (top level)
+
+# we list the name of each package this app requires
+
+requests
+plotly
+python-dotenv
+pandas
+pytest
+flask
+gnuicorn
