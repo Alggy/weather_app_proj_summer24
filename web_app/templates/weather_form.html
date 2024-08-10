@@ -1,0 +1,21 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h2>Weather Forecast</h2>
+
+    <p>Enter your zip code...</p>
+
+    <form action="/weather" method="POST">
+
+        <label>ZIP Code:</label>
+        <input type="text" name="ZIP Code" placeholder="10001" value="10001">
+        <br>
+
+    
+
+        <button class="btn btn-success">Submit</button>
+    </form>
+
+{% endblock %}
