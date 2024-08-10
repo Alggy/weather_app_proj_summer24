@@ -13,4 +13,6 @@ flask
 pgeocode
 json
 
+IPython
+
 #gnuicorn

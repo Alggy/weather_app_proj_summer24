@@ -3,8 +3,16 @@ from pgeocode import Nominatim
 import requests
 import json
 from IPython.display import Image, display
+from IPython.core.display import HTML
+from pandas import DataFrame
 
 degree_sign = u"\N{DEGREE SIGN}"
+
+def to_image(url):
+    return '<img src="'+ url + '" width="32" >'
+
+def chopped_date(start_time):
+    return start_time[5:10]
 
 def display_forecast(zip_code, country_code="US"):
     """
@@ -36,14 +44,49 @@ def display_forecast(zip_code, country_code="US"):
     periods = parsed_forecast_response["properties"]["periods"]
     daytime_periods = [period for period in periods if period["isDaytime"] == True]
 
-    for period in daytime_periods:
-        #print(period.keys())
-        print("-------------")
-        print(period["name"], period["startTime"][0:7])
-        print(period["shortForecast"], f"{period['temperature']} {degree_sign}{period['temperatureUnit']}")
+    #for period in daytime_periods:
+    #    #print(period.keys())
+    #    print("-------------")
+    #    print(period["name"], period["startTime"][0:7])
+    #    print(period["shortForecast"], f"{period['temperature']} {degree_sign}{period['temperatureUnit']}")
         #print(period["detailedForecast"])
-        display(Image(url=period["icon"]))
+    #    display(Image(url=period["icon"]))
+
+    df = DataFrame(daytime_periods)
+    
+    df["date"] = df["startTime"].apply(chopped_date)
+
+    # df["img"] = df["icon"].apply(to_image)
+
+    # combined column for temp display
+    # ... h/t: https://stackoverflow.com/questions/19377969/combine-two-columns-of-text-in-pandas-dataframe
+    df["temp"] = df["temperature"].astype(str) + " " + degree_sign + df["temperatureUnit"]
+
+    # rename cols:
+    df.rename(columns={
+        "name":"day",
+        "shortForecast": "forecast"
+    }, inplace=True)
+
+    # drop unused cols:
+    df.drop(columns=[
+        "temperature", "temperatureUnit", "temperatureTrend",
+        "windSpeed", "windDirection",
+        "startTime", "endTime",
+        "number", "isDaytime", "detailedForecast"
+    ], inplace=True)
+
+    # re-order columns:
+    df = df.reindex(columns=['day', 'date', 'temp', 'forecast', 'icon'])
+    
+    # return df
+    print("---")
+    print("SEVEN DAY FORECAST")
+    print("LOCATION:", f"{geo.place_name}, {geo.state_code}".upper())
+    print("---")
+    return HTML(df.to_html(escape=False, formatters=dict(icon=to_image)))
 
 
-my_zip = '07302'
+
+my_zip = input("Please enter a 5 digit zip code (i.e., 20057): ")
 display_forecast(my_zip)
