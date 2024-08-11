@@ -25,7 +25,6 @@ def display_forecast(zip_code, country_code="US"):
         zip_code (str) a valid US zip code, like "20057" or "06510".
 
     """
-
     nomi = Nominatim(country_code)
     geo = nomi.query_postal_code(zip_code)
     latitude = geo["latitude"]
@@ -44,49 +43,50 @@ def display_forecast(zip_code, country_code="US"):
     periods = parsed_forecast_response["properties"]["periods"]
     daytime_periods = [period for period in periods if period["isDaytime"] == True]
 
-    for period in daytime_periods:
-        #print(period.keys())
-        print("-------------")
-        print(period["name"], period["startTime"][0:7])
-        print(period["shortForecast"], f"{period['temperature']} {degree_sign}{period['temperatureUnit']}")
-       #print(period["detailedForecast"])
-        display(Image(url=period["icon"]))
+    #for period in daytime_periods:
+    #    #print(period.keys())
+    #    print("-------------")
+    #    print(period["name"], period["startTime"][0:7])
+    #    print(period["shortForecast"], f"{period['temperature']} {degree_sign}{period['temperatureUnit']}")
+    #   #print(period["detailedForecast"])
+    #    display(Image(url=period["icon"]))
 
-    # df = DataFrame(daytime_periods)
-    # 
-    # df["date"] = df["startTime"].apply(chopped_date)
-# 
-    # # df["img"] = df["icon"].apply(to_image)
-# 
+    df = DataFrame(daytime_periods)
+    
+    df["date"] = df["startTime"].apply(chopped_date)
+
+    df["img"] = df["icon"].apply(to_image)
+ 
     # # combined column for temp display
     # # ... h/t: https://stackoverflow.com/questions/19377969/combine-two-columns-of-text-in-pandas-dataframe
     # df["temp"] = df["temperature"].astype(str) + " " + degree_sign + df["temperatureUnit"]
-# 
+ 
     # # rename cols:
-    # df.rename(columns={
-    #     "name":"day",
-   #     "shortForecast": "forecast"
-   # }, inplace=True)
+    df.rename(columns={
+         "name":"day",
+         "shortForecast": "forecast"
+    }, inplace=True)
 
-   # # drop unused cols:
-   # df.drop(columns=[
-   #     "temperature", "temperatureUnit", "temperatureTrend",
-   #     "windSpeed", "windDirection",
-   #     "startTime", "endTime",
-   #     "number", "isDaytime", "detailedForecast"
-   # ], inplace=True)
+     # drop unused cols:
+    df.drop(columns=[
+        "temperature", "temperatureUnit", "temperatureTrend",
+        "windSpeed", "windDirection",
+        "startTime", "endTime",
+        "number", "isDaytime", "detailedForecast"
+        ], inplace=True)
+ 
+    # re-order columns:
+    df = df.reindex(columns=['day', 'date', 'temp', 'forecast', 'icon'])
+    
+    # return df
+    print("---")
+    print("SEVEN DAY FORECAST")
+    print("LOCATION:", f"{geo.place_name}, {geo.state_code}".upper())
+    print("---")
+    #return HTML(df.to_html(escape=False, formatters=dict(icon=to_image)))
+    print(df)
+ 
 
-   # # re-order columns:
-   # df = df.reindex(columns=['day', 'date', 'temp', 'forecast', 'icon'])
-   # 
-   # # return df
-   # print("---")
-   # print("SEVEN DAY FORECAST")
-   # print("LOCATION:", f"{geo.place_name}, {geo.state_code}".upper())
-   # print("---")
-   # return HTML(df.to_html(escape=False, formatters=dict(icon=to_image)))
-
-
-
-my_zip = input("Please enter a 5 digit zip code (i.e., 20057): ")
-display_forecast(my_zip)
+if __name__ == "__main__":
+    my_zip = input("Please enter a 5 digit zip code (i.e., 20057): ")
+    display_forecast(my_zip)

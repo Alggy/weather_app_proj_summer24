@@ -11,8 +11,8 @@ pytest
 flask
 
 pgeocode
-json
+
 
 IPython
 
-gnuicorn
+gunicorn
