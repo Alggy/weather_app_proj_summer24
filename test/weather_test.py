@@ -14,5 +14,5 @@ def test_degree_formatting():
 
 
 def test_demo():
-    demo_test = display_forecast("10001")
-    assert isinstance(demo_test,HTML)
+    df = display_forecast("10001")
+    assert isinstance(df,DataFrame)

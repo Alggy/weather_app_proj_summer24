@@ -78,6 +78,7 @@ def display_forecast(zip_code, country_code="US"):
     print("---")
     #return HTML(df.to_html(escape=False, formatters=dict(icon=to_image)))
     print(df)
+    return df
  
 
 if __name__ == "__main__":
