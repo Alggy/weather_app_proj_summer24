@@ -43,13 +43,6 @@ def display_forecast(zip_code, country_code="US"):
     periods = parsed_forecast_response["properties"]["periods"]
     daytime_periods = [period for period in periods if period["isDaytime"] == True]
 
-    #for period in daytime_periods:
-    #    #print(period.keys())
-    #    print("-------------")
-    #    print(period["name"], period["startTime"][0:7])
-    #    print(period["shortForecast"], f"{period['temperature']} {degree_sign}{period['temperatureUnit']}")
-    #   #print(period["detailedForecast"])
-    #    display(Image(url=period["icon"]))
 
     df = DataFrame(daytime_periods)
     
@@ -59,7 +52,7 @@ def display_forecast(zip_code, country_code="US"):
  
     # # combined column for temp display
     # # ... h/t: https://stackoverflow.com/questions/19377969/combine-two-columns-of-text-in-pandas-dataframe
-    # df["temp"] = df["temperature"].astype(str) + " " + degree_sign + df["temperatureUnit"]
+    df["temp"] = df["temperature"].astype(str) + " " + degree_sign + df["temperatureUnit"]
  
     # # rename cols:
     df.rename(columns={
