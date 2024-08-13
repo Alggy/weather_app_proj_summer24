@@ -16,7 +16,7 @@ def test_degree_formatting():
 def test_demo():
     df = display_forecast("10001")
     assert isinstance(df,DataFrame)
-    assert df.columns.tolist() == ['day', 'date', 'temp', 'forecast', 'icon']
+    assert df.columns.tolist() == ['day', 'date', 'temp', 'forecast', 'img']
 
 def test_location():
     nomi = Nominatim("US")
