@@ -6,6 +6,13 @@ from IPython.display import Image, display
 from IPython.core.display import HTML
 from pandas import DataFrame
 
+import re
+
+def is_valid_zip(zip_code):
+    """Validates a US zip code."""
+    zip_regex = r'^\d{5}(?:-\d{4})?$'
+    return re.match(zip_regex, zip_code) is not None
+
 degree_sign = u"\N{DEGREE SIGN}"
 
 def to_image(url):
@@ -69,7 +76,7 @@ def display_forecast(zip_code, country_code="US"):
         ], inplace=True)
  
     # re-order columns:
-    df = df.reindex(columns=['day', 'date', 'temp', 'forecast', 'icon'])
+    df = df.reindex(columns=['day', 'date', 'temp', 'forecast', 'img'])
     
     # return df
     print("---")
@@ -84,4 +91,7 @@ def display_forecast(zip_code, country_code="US"):
 
 if __name__ == "__main__":
     my_zip = input("Please enter a 5 digit zip code (i.e., 20057): ")
-    display_forecast(my_zip)
+    if is_valid_zip(my_zip):
+        display_forecast(my_zip)
+    else:
+        print("You entered invalid US zip code. Please try again")
